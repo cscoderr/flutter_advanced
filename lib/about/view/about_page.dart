@@ -70,7 +70,7 @@ class _AboutListTile extends StatelessWidget {
   final String title;
   final String uri;
   final String? subtitle;
-  final IconData icon;
+  final FaIconData icon;
 
   @override
   Widget build(BuildContext context) {

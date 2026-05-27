@@ -1,27 +1,27 @@
+import 'package:animation_playground/about/about.dart';
 import 'package:animation_playground/animated_card/animated_card.dart';
 import 'package:animation_playground/animated_lock/animated_lock.dart';
 import 'package:animation_playground/animated_progress_bar/animated_progress_bar.dart';
 import 'package:animation_playground/animated_slider/view/animated_slider_page.dart';
+import 'package:animation_playground/animated_text_progress/animated_text_progress.dart';
 import 'package:animation_playground/apple_book_scroll/apple_book_scroll.dart';
 import 'package:animation_playground/blur_animation/blur_animation.dart';
 import 'package:animation_playground/core/core.dart';
 import 'package:animation_playground/coverflow_carousel/coverflow_carousel.dart';
 import 'package:animation_playground/particle_clock/particle_clock.dart';
 import 'package:animation_playground/petal_menu/petal_menu.dart';
+import 'package:animation_playground/phone_pattern/phone_pattern.dart';
 import 'package:animation_playground/photo_extractor/photo_extractor.dart';
 import 'package:animation_playground/rainbow_sticks/rainbow_sticks.dart';
 import 'package:animation_playground/slide_to_confirm/view/slide_to_confirm_page.dart';
+import 'package:animation_playground/swipe_to_pay/swipe_to_pay.dart';
+import 'package:animation_playground/tarot_scroll/view/tarot_scroll_page.dart';
 import 'package:animation_playground/text_particle/text_particle.dart';
 import 'package:animation_playground/text_shimmer_wave/text_shimmer_wave.dart';
 import 'package:animation_playground/thanos_snap_effect/view/thanos_snap_effect_page.dart';
 import 'package:animation_playground/water_wave_animation/water_wave_animation_page.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-
-import 'about/about.dart';
-import 'phone_pattern/phone_pattern.dart';
-import 'swipe_to_pay/swipe_to_pay.dart';
-import 'tarot_scroll/view/tarot_scroll_page.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -33,9 +33,9 @@ class App extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         centerTitle: true,
         titleTextStyle: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
+          fontWeight: FontWeight.bold,
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
         title: const Text("Flutter Animations"),
         actions: [
           IconButton(
@@ -48,11 +48,16 @@ class App extends StatelessWidget {
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
           const AppTextDivider(text: 'New'),
+          AppElevatedButton(
+            text: "Animated Text Progress",
+            icon: const Icon(Iconsax.slider_horizontal),
+            onPressed: () =>
+                Navigator.of(context).push(AnimatedTextProgressPage.route()),
+          ),
+          const SizedBox(height: 20),
           AppElevatedButton(
             text: "Slide to Submit",
             icon: const Icon(Iconsax.slider_horizontal),
