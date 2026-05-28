@@ -1,5 +1,7 @@
 import 'dart:math' as math;
 
+import 'package:animation_playground/core/extensions/num_extensions.dart';
+import 'package:animation_playground/core/utils/helpers.dart';
 import 'package:flutter/material.dart';
 
 class RainbowSticksPage extends StatefulWidget {
@@ -36,9 +38,7 @@ class _RainbowSticksPageState extends State<RainbowSticksPage>
     return Scaffold(
       backgroundColor: Colors.black,
       body: CustomPaint(
-        painter: _CiclePainter(
-          animationController: _animationController,
-        ),
+        painter: _CiclePainter(animationController: _animationController),
         size: MediaQuery.of(context).size,
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -57,10 +57,9 @@ class _RainbowSticksPageState extends State<RainbowSticksPage>
 }
 
 class _CiclePainter extends CustomPainter {
-  _CiclePainter({
-    required AnimationController animationController,
-  })  : _animationController = animationController,
-        super(repaint: animationController);
+  _CiclePainter({required AnimationController animationController})
+    : _animationController = animationController,
+      super(repaint: animationController);
   final AnimationController _animationController;
 
   @override
@@ -75,10 +74,18 @@ class _CiclePainter extends CustomPainter {
     final center = size.center(Offset.zero);
 
     for (var i = 1; i <= circleThreshold; i++) {
-      final innerCirclePoint =
-          toPolar(center, i, circleThreshold, innerCircleRadius);
-      final outerCirclePoint =
-          toPolar(center, i, circleThreshold, outerCircleRaius);
+      final innerCirclePoint = toPolar(
+        center,
+        i,
+        circleThreshold,
+        innerCircleRadius,
+      );
+      final outerCirclePoint = toPolar(
+        center,
+        i,
+        circleThreshold,
+        outerCircleRaius,
+      );
 
       final xCenter = (innerCirclePoint.dx + outerCirclePoint.dx) / 2;
       final yCenter = (innerCirclePoint.dy + outerCirclePoint.dy) / 2;
@@ -89,10 +96,7 @@ class _CiclePainter extends CustomPainter {
       final animation = Tween(begin: 0.0, end: 180.radians).animate(
         CurvedAnimation(
           parent: _animationController,
-          curve: Interval(
-            startValue,
-            endValue,
-          ),
+          curve: Interval(startValue, endValue),
         ),
       );
 
@@ -143,23 +147,4 @@ class _CiclePainter extends CustomPainter {
     final paint = Paint()..color = color;
     canvas.drawCircle(offset, 7, paint);
   }
-}
-
-extension NumX<T extends num> on T {
-  double get radians => (this * math.pi) / 180.0;
-  double get stepsInAngle => (math.pi * 2) / this;
-}
-
-Offset toPolar(Offset center, int index, int total, double radius) {
-  final theta = index * total.stepsInAngle;
-  final dx = math.cos(theta) * radius;
-  final dy = math.sin(theta) * radius;
-  return Offset(dx, dy) + center;
-}
-
-Offset toArc(Offset center, int index, int total, double radius) {
-  final theta = index * total.stepsInAngle;
-  final dx = radius * math.cos(theta);
-  final dy = radius * math.sin(theta);
-  return Offset(dx, dy) + center;
 }

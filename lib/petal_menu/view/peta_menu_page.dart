@@ -1,4 +1,4 @@
-import 'package:animation_playground/rainbow_sticks/rainbow_sticks.dart';
+import 'package:animation_playground/core/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
@@ -45,8 +45,12 @@ class _PetalMenuPageState extends State<PetalMenuPage>
           stiffness: 180.0,
           damping: 20.0,
         );
-        final simulation = SpringSimulation(springDescription,
-            _animationController.value, 0.05, _animationController.velocity);
+        final simulation = SpringSimulation(
+          springDescription,
+          _animationController.value,
+          0.05,
+          _animationController.velocity,
+        );
         _animationController.animateWith(simulation);
       }
     });
@@ -67,7 +71,11 @@ class _PetalMenuPageState extends State<PetalMenuPage>
       damping: 20.0,
     );
     final simulation = SpringSimulation(
-        springDescription, 0, 1, _animationController.velocity);
+      springDescription,
+      0,
+      1,
+      _animationController.velocity,
+    );
     _animationController.animateWith(simulation);
     setState(() {
       isOpen = true;
@@ -92,129 +100,140 @@ class _PetalMenuPageState extends State<PetalMenuPage>
     final size = MediaQuery.sizeOf(context);
     return Scaffold(
       body: AnimatedBuilder(
-          animation: _animationController,
-          builder: (context, child) {
-            return Stack(
-              children: [
-                GestureDetector(
-                  onTap: () => _closeMenu(selectedColor),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 250 ~/ 2),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          selectedColor.withValues(alpha: 0.2),
-                          selectedColor.withValues(alpha: 0.5),
-                          selectedColor
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
+        animation: _animationController,
+        builder: (context, child) {
+          return Stack(
+            children: [
+              GestureDetector(
+                onTap: () => _closeMenu(selectedColor),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 250 ~/ 2),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        selectedColor.withValues(alpha: 0.2),
+                        selectedColor.withValues(alpha: 0.5),
+                        selectedColor,
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                     ),
                   ),
                 ),
-                Center(
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        width: _animationController
-                            .drive(Tween(
-                                begin: size.width * 0.4, end: size.width * 0.9))
-                            .value,
-                        height: MediaQuery.of(context).size.width * 0.9,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white70,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black54,
-                              blurRadius: isOpen ? 30 : 10,
-                              offset: Offset(
-                                0,
-                                isOpen ? 10 : 0,
-                              ),
+              ),
+              Center(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: _animationController
+                          .drive(
+                            Tween(
+                              begin: size.width * 0.4,
+                              end: size.width * 0.9,
                             ),
-                          ],
-                        ),
+                          )
+                          .value,
+                      height: MediaQuery.of(context).size.width * 0.9,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white70,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black54,
+                            blurRadius: isOpen ? 30 : 10,
+                            offset: Offset(0, isOpen ? 10 : 0),
+                          ),
+                        ],
                       ),
-                      ...colors.asMap().entries.map((e) {
-                        final angle = e.key * (360 / colors.length);
+                    ),
+                    ...colors.asMap().entries.map((e) {
+                      final angle = e.key * (360 / colors.length);
 
-                        return GestureDetector(
-                          onTap: () {
-                            _closeMenu(e.value);
-                          },
-                          child: Transform.rotate(
-                            angle: _animationController
-                                .drive(Tween(begin: 0.0, end: angle.radians))
-                                .value,
-                            child: Transform.translate(
-                              offset: Offset(
-                                0.0,
-                                _animationController
-                                    .drive(Tween(
-                                        begin: 0.0, end: -size.width * 0.2))
-                                    .value,
-                              ),
-                              child: Container(
-                                height: _animationController
-                                    .drive(Tween(
-                                        begin: size.width * 0.25,
-                                        end: size.width * 0.40))
-                                    .value,
-                                width: size.width * 0.25,
-                                //Increasing the margin solve the hit issue
-                                margin: const EdgeInsets.all(100),
-                                decoration: BoxDecoration(
-                                  color: e.value,
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      colors[e.key],
-                                      colors[e.key],
-                                      colors[e.key].withValues(alpha: 0.7)
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: _animationController
-                                          .drive(ColorTween(
-                                              begin: Colors.transparent,
-                                              end: Colors.black
-                                                  .withValues(alpha: 0.4)))
-                                          .value!,
-                                      blurRadius: 5,
-                                      offset: const Offset(0, 12),
-                                    )
+                      return GestureDetector(
+                        onTap: () {
+                          _closeMenu(e.value);
+                        },
+                        child: Transform.rotate(
+                          angle: _animationController
+                              .drive(Tween(begin: 0.0, end: angle.radians))
+                              .value,
+                          child: Transform.translate(
+                            offset: Offset(
+                              0.0,
+                              _animationController
+                                  .drive(
+                                    Tween(begin: 0.0, end: -size.width * 0.2),
+                                  )
+                                  .value,
+                            ),
+                            child: Container(
+                              height: _animationController
+                                  .drive(
+                                    Tween(
+                                      begin: size.width * 0.25,
+                                      end: size.width * 0.40,
+                                    ),
+                                  )
+                                  .value,
+                              width: size.width * 0.25,
+                              //Increasing the margin solve the hit issue
+                              margin: const EdgeInsets.all(100),
+                              decoration: BoxDecoration(
+                                color: e.value,
+                                gradient: LinearGradient(
+                                  colors: [
+                                    colors[e.key],
+                                    colors[e.key],
+                                    colors[e.key].withValues(alpha: 0.7),
                                   ],
-                                  borderRadius: BorderRadius.circular(
-                                      ((size.width * 0.40) / 2) - 10),
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: _animationController
+                                        .drive(
+                                          ColorTween(
+                                            begin: Colors.transparent,
+                                            end: Colors.black.withValues(
+                                              alpha: 0.4,
+                                            ),
+                                          ),
+                                        )
+                                        .value!,
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 12),
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(
+                                  ((size.width * 0.40) / 2) - 10,
                                 ),
                               ),
                             ),
                           ),
-                        );
-                      }).toList(),
-                      if (!isOpen)
-                        GestureDetector(
-                          onTap: _openMenu,
-                          child: Container(
-                            width: size.width * 0.3,
-                            height: size.width * 0.3,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: selectedColor,
-                            ),
+                        ),
+                      );
+                    }).toList(),
+                    if (!isOpen)
+                      GestureDetector(
+                        onTap: _openMenu,
+                        child: Container(
+                          width: size.width * 0.3,
+                          height: size.width * 0.3,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: selectedColor,
                           ),
-                        )
-                    ],
-                  ),
+                        ),
+                      ),
+                  ],
                 ),
-              ],
-            );
-          }),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

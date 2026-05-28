@@ -12,6 +12,7 @@ import 'package:animation_playground/particle_clock/particle_clock.dart';
 import 'package:animation_playground/petal_menu/petal_menu.dart';
 import 'package:animation_playground/phone_pattern/phone_pattern.dart';
 import 'package:animation_playground/photo_extractor/photo_extractor.dart';
+import 'package:animation_playground/phyllotaxis_color_picker/phyllotaxis_color_picker.dart';
 import 'package:animation_playground/rainbow_sticks/rainbow_sticks.dart';
 import 'package:animation_playground/slide_to_confirm/view/slide_to_confirm_page.dart';
 import 'package:animation_playground/swipe_to_pay/swipe_to_pay.dart';
@@ -51,6 +52,13 @@ class App extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
           const AppTextDivider(text: 'New'),
+          AppElevatedButton(
+            text: "Phyllotaxis Color Picker",
+            icon: const Icon(Iconsax.pharagraphspacing),
+            onPressed: () =>
+                Navigator.of(context).push(PhyllotaxisColorPickerPage.route()),
+          ),
+          const SizedBox(height: 20),
           AppElevatedButton(
             text: "Animated Text Progress",
             icon: const Icon(Iconsax.slider_horizontal),

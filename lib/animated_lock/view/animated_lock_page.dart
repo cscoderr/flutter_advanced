@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:animation_playground/rainbow_sticks/rainbow_sticks.dart';
+import 'package:animation_playground/core/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedLockPage extends StatefulWidget {
@@ -26,9 +26,10 @@ class _AnimatedLockPageState extends State<AnimatedLockPage>
       vsync: this,
       duration: const Duration(milliseconds: 300),
     )..forward();
-    _arcAnimation = Tween(begin: -180.radians, end: -90.radians).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.elasticInOut),
-    );
+    _arcAnimation = Tween(
+      begin: -180.radians,
+      end: -90.radians,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.elasticInOut));
   }
 
   @override
@@ -51,9 +52,9 @@ class _AnimatedLockPageState extends State<AnimatedLockPage>
               children: [
                 Text(
                   isLocked ? "Locked" : "Unlock",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Colors.white,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(color: Colors.white),
                 ),
                 const SizedBox(height: 10),
                 Switch.adaptive(
@@ -78,10 +79,7 @@ class _AnimatedLockPageState extends State<AnimatedLockPage>
 }
 
 class LockPainter extends CustomPainter {
-  LockPainter({
-    required this.arcAnimation,
-    this.isLocked = false,
-  });
+  LockPainter({required this.arcAnimation, this.isLocked = false});
 
   final Animation<double> arcAnimation;
 

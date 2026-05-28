@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SliderTextWidget extends StatelessWidget {
-  const SliderTextWidget({
-    super.key,
-    required this.text,
-    this.hasSign = true,
-  });
+  const SliderTextWidget({super.key, required this.text, this.hasSign = true});
   final String text;
   final bool hasSign;
 
@@ -16,27 +12,21 @@ class SliderTextWidget extends StatelessWidget {
       children: [
         Text(
           '\u20A6',
-          style: Theme.of(context)
-              .textTheme
-              .displayMedium
-              ?.copyWith(fontWeight: FontWeight.w700),
+          style: Theme.of(
+            context,
+          ).textTheme.displayMedium?.copyWith(fontWeight: FontWeight.w700),
         ),
         ...List.generate(
           text.length,
-          (index) => SliderText(
-            value: int.tryParse(text[index]) ?? 0,
-          ),
-        )
+          (index) => SliderText(value: int.tryParse(text[index]) ?? 0),
+        ),
       ],
     );
   }
 }
 
 class SliderText extends StatefulWidget {
-  const SliderText({
-    super.key,
-    required this.value,
-  });
+  const SliderText({super.key, required this.value});
 
   final int value;
 
@@ -46,7 +36,7 @@ class SliderText extends StatefulWidget {
 
 class _SliderTextState extends State<SliderText> {
   late final ScrollController _scrollController;
-  final double _maxScrollHeight = 72;
+  final double _maxScrollHeight = 55;
   //72
   @override
   void initState() {
@@ -87,10 +77,9 @@ class _SliderTextState extends State<SliderText> {
             10,
             (index) => Text(
               '$index',
-              style: Theme.of(context)
-                  .textTheme
-                  .displayMedium
-                  ?.copyWith(fontWeight: FontWeight.w700),
+              style: Theme.of(
+                context,
+              ).textTheme.displayMedium?.copyWith(fontWeight: FontWeight.w700),
             ),
           ),
         ),

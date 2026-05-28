@@ -2,8 +2,8 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:animation_playground/core/utils/helpers.dart';
 import 'package:animation_playground/gen/assets.gen.dart';
-import 'package:animation_playground/rainbow_sticks/rainbow_sticks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:iconsax/iconsax.dart';
@@ -18,9 +18,7 @@ class ThanosSnapEffectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Thanos Snap Effect'),
-      ),
+      appBar: AppBar(title: const Text('Thanos Snap Effect')),
       body: SafeArea(
         child: Center(
           child: Column(
@@ -33,7 +31,9 @@ class ThanosSnapEffectPage extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 20),
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Assets.images.img3.image(),
@@ -51,14 +51,10 @@ class ThanosSnapEffectPage extends StatelessWidget {
                       child: Column(
                         children: [
                           ListTile(
-                            leading: Assets.images.img2.image(
-                              height: 300,
-                            ),
+                            leading: Assets.images.img2.image(height: 300),
                             title: Text(
                               'Tomiwa Idowu',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineLarge
+                              style: Theme.of(context).textTheme.headlineLarge
                                   ?.copyWith(
                                     fontWeight: FontWeight.w900,
                                     color: Colors.white,
@@ -66,12 +62,8 @@ class ThanosSnapEffectPage extends StatelessWidget {
                             ),
                             subtitle: Text(
                               'Mobile Engineer 💙',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
-                                  ?.copyWith(
-                                    color: Colors.white,
-                                  ),
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(color: Colors.white),
                             ),
                             trailing: const Icon(Iconsax.arrow_right_3),
                           ),
@@ -82,10 +74,9 @@ class ThanosSnapEffectPage extends StatelessWidget {
                       child: ListTile(
                         title: Text(
                           'Hire me 🙂‍↕️',
-                          style:
-                              Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: Colors.white,
-                                  ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.titleLarge?.copyWith(color: Colors.white),
                         ),
                       ),
                     ),
@@ -93,10 +84,9 @@ class ThanosSnapEffectPage extends StatelessWidget {
                       child: ListTile(
                         title: Text(
                           'Open to remote roles',
-                          style:
-                              Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: Colors.white,
-                                  ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.titleLarge?.copyWith(color: Colors.white),
                         ),
                         trailing: const Icon(Iconsax.arrow_right_3),
                       ),
@@ -113,10 +103,7 @@ class ThanosSnapEffectPage extends StatelessWidget {
 }
 
 class ThanosSnapEffect extends StatefulWidget {
-  const ThanosSnapEffect({
-    super.key,
-    required this.child,
-  });
+  const ThanosSnapEffect({super.key, required this.child});
 
   final Widget child;
 
@@ -184,23 +171,24 @@ class _ThanosSnapEffectState extends State<ThanosSnapEffect>
     //Calculate the animation end interval
     //based on the start interval
     final endInterval = math.max(beginInterval * 0.3, 1).toDouble();
-    final endOffset = toPolar(MediaQuery.sizeOf(context).center(Offset.zero),
-        index, _imageDataList.length, 100);
+    final endOffset = toPolar(
+      MediaQuery.sizeOf(context).center(Offset.zero),
+      index,
+      _imageDataList.length,
+      100,
+    );
 
     final curvedAnimation = CurvedAnimation(
       parent: _animationController,
-      curve: Interval(
-        beginInterval,
-        endInterval,
-        curve: Curves.easeOut,
-      ),
+      curve: Interval(beginInterval, endInterval, curve: Curves.easeOut),
     );
 
     final transformAnimation = Tween<Offset>(
       begin: Offset.zero,
       end: Offset(
-          endOffset.dx.toInt().isEven ? endOffset.dx / 2 : -endOffset.dx / 2,
-          -endOffset.dy),
+        endOffset.dx.toInt().isEven ? endOffset.dx / 2 : -endOffset.dx / 2,
+        -endOffset.dy,
+      ),
     ).animate(curvedAnimation);
 
     final fadeAnimation = Tween<double>(
@@ -212,10 +200,7 @@ class _ThanosSnapEffectState extends State<ThanosSnapEffect>
       animation: _animationController,
       builder: (context, child) => Transform.translate(
         offset: transformAnimation.value,
-        child: FadeTransition(
-          opacity: fadeAnimation,
-          child: child,
-        ),
+        child: FadeTransition(opacity: fadeAnimation, child: child),
       ),
       child: Image.memory(imageData),
     );
@@ -232,8 +217,10 @@ class _ThanosSnapEffectState extends State<ThanosSnapEffect>
     const imageDataListSize = 25;
 
     //Generate list of captured images with captured image and imageDataListSize
-    final images =
-        _generateImageDistribution(capturedImageList, imageDataListSize);
+    final images = _generateImageDistribution(
+      capturedImageList,
+      imageDataListSize,
+    );
 
     //If generated image is empty stop the operation
     if (images.isEmpty) return;
@@ -251,7 +238,9 @@ class _ThanosSnapEffectState extends State<ThanosSnapEffect>
   ///Use to generate image based on captured image and imageDataListSize
   ///More like breaking the captured image into chunks of given imageDataListSize
   List<img.Image> _generateImageDistribution(
-      Uint8List imageData, int imageDataListSize) {
+    Uint8List imageData,
+    int imageDataListSize,
+  ) {
     //Convert the imageData into PNG format
     final decodedImage = img.decodePng(imageData);
 
@@ -306,8 +295,9 @@ class _ThanosSnapEffectState extends State<ThanosSnapEffect>
   ///using the global key
   Future<Uint8List?> _captureWidgetAsImageList() async {
     //find the repaintboundary context renderobject using the assigned widget key
-    final repaintBoundry = _widgetAsImageKey.currentContext?.findRenderObject()
-        as RenderRepaintBoundary?;
+    final repaintBoundry =
+        _widgetAsImageKey.currentContext?.findRenderObject()
+            as RenderRepaintBoundary?;
 
     //if it does not find the render object
     //return null else continue the operation
